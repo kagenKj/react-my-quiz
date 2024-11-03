@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css';
+import React, { useState } from 'react';
+import { questions } from './questions';
+import Quiz from './components/Quiz';
+import Results from './components/Results';
+
+
+function Header() {
+  return (
+    <div className="title">
+      <h1>My Quiz</h1>
+    </div>
+  );
+}
 
 function App() {
+  
+  const [progress, setProgress] = useState(0)
+  const [correct, setCorrect] = useState(0)
+  const question = questions[progress]
+
+  const onClickVariant = (index) => {
+    setProgress(progress + 1)
+
+    if(index === question.correct) {
+      setCorrect(correct + 1)
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <div className="App">
+        {
+          progress !== questions.length
+          ? <Quiz question={question} onClickVariant={onClickVariant} progress={ progress }/>
+          : <Results correct={correct}/>
+        }
+      </div>
+    </>
+
   );
 }
 
